@@ -59,7 +59,8 @@ def verificacion_entero(mensaje:str):
 
 def verificacion_comprador(nombre:str,localidad:str):
     """Esta función recorre la lista de compradores y verifica que el elemento entregado
-    (en este caso el nombre de un comprador), no este repetido. En el caso de que se repita entregara False"""
+    (en este caso el nombre de un comprador), no este repetido. En el caso de que se repita entregara False.
+    Con el argumento localidad se puede setear a: "conce", "puente", "valpo" y "vinia" para recorrer las listas respectivas"""
     if localidad == "conce":
         for i in totem_autoservicio["compradores_conce"]:
             nombre_lista = i["nombre_comprador"]
