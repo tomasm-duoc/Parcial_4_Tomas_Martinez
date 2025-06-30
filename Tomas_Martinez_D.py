@@ -101,8 +101,8 @@ while True:
 
     opcion = verificacion_entero("\nIngrese su opción: ")
 
-    if opcion == 1: # Concepción
-        if totem_autoservicio["entradas"][0]["stock_entradas_conce"] < 1:
+    if opcion == 1: # Concepción                      
+        if totem_autoservicio["entradas"][0]["stock_entradas_conce"] < 1:   # Verificacion de stock de entradas
             print("No hay entradas disponibles!")
             continue
 
@@ -124,7 +124,7 @@ while True:
                 print("\nERROR - Código de acceso invalido")
 
     elif opcion == 2: # Puente Alto
-        if totem_autoservicio["entradas"][0]["stock_entradas_puente"] < 1:
+        if totem_autoservicio["entradas"][0]["stock_entradas_puente"] < 1:   # Verificacion de stock de entradas
             print("No hay entradas disponibles!")
             continue
 
@@ -148,7 +148,7 @@ while True:
                 print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_puente"]}")
 
     elif opcion == 3: # Muelle Barón, Valparaíso
-        if totem_autoservicio["entradas"][0]["stock_entradas_valpo"] < 1:
+        if totem_autoservicio["entradas"][0]["stock_entradas_valpo"] < 1:   # Verificacion de stock de entradas
             print("No hay entradas disponibles!")
             continue
 
@@ -167,8 +167,37 @@ while True:
             print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_valpo"]}")
     
     elif opcion == 4: # Muelle Vergara, Viña del Mar
-        print(f"opcion = {opcion}")
-    
+        if totem_autoservicio["entradas"][0]["stock_entradas_vinia"] < 1:  # Verificacion de stock de entradas
+            print("No hay entradas disponibles!")
+            continue
+
+        print("- Compra en Muelle Vergara, Viña del Mar -")
+        nombre_comprador = verificacion_string("Nombre del comprador: ")
+
+        if verificacion_comprador(nombre_comprador,"vinia") == False:
+            print("\nERROR - Ese nombre de comprador ya existe!")
+            continue
+        else:
+            hora_entrada = verificacion_string("Tipo de entrada (Sun=Sunset, Ni=Night): ")
+            if hora_entrada.lower() == "sun":
+                comprador_añadir = {"nombre_comprador": nombre_comprador,
+                                    "hora": "Sun"}                              # Convertir nombre y la hora de entradas en diccionario
+                totem_autoservicio["compradores_vinia"].append(comprador_añadir)# Añadir comprador a la lista
+                totem_autoservicio["entradas"][0]["stock_entradas_vinia"] -= 1  # Restar entrada para reflejar compra en el stock
+                print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_vinia"]}")
+                
+            elif hora_entrada.lower() == "ni":
+                comprador_añadir = {"nombre_comprador": nombre_comprador,
+                                    "hora": "Ni"}                              # Convertir nombre y la hora de entradas en diccionario
+                totem_autoservicio["compradores_vinia"].append(comprador_añadir)# Añadir comprador a la lista
+                totem_autoservicio["entradas"][0]["stock_entradas_vinia"] -= 1  # Restar entrada para reflejar compra en el stock
+                print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_vinia"]}")
+                
+            else:
+                print("\nERROR - Tipo de entrada invalido")
+                continue
+            print(totem_autoservicio["compradores_vinia"])
+
     elif opcion == 5: # Salir
         break
 
