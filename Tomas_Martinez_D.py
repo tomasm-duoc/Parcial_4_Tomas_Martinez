@@ -7,13 +7,17 @@ totem_autoservicio = {
         {
             "nombre_comprador": "Nombre2",    # Nombres de comprador "placeholder" para testeo
         }
+    ],
+    "entradas":
+    [
+        {
+            "stock_entradas_conce": 500,
+            "stock_entradas_puente": 1300,
+            "stock_entradas_valpo": 100,
+            "stock_entradas_vinia": 50
+        }
     ]
 }
-
-stock_entradas_conce = 500
-stock_entradas_puente = 1300
-stock_entradas_valpo = 100
-stock_entradas_vinia = 50
 
 codigo_confirmacion = "Tengoelpoderr42" # Codigo necesario para opción 1 - Compra en Concepción
 
@@ -47,38 +51,59 @@ def verificacion_string(mensaje:str):
 
 while True:
     print("\nTOTEM AUTOSERVICIO GIRA ROCK AND CHILE IN CHILE")
-    print("\n1.- Comprar entrada a “los Fortificados” en Concepción.")
-    print("2.- Comprar entrada a “los Fortificados” en Puente Alto.")
-    print("3.- Comprar entrada a “los Fortificados” en Muelle Barón en Valparaíso.")
-    print("4.- Comprar entrada a “los Fortificados” en Muelle Vergara en Viña del Mar.")
+    print("\n1.- Comprar entrada a “los Fortificados” en Concepción.")  
+    print("2.- Comprar entrada a “los Fortificados” en Puente Alto.")  #
+    print("3.- Comprar entrada a “los Fortificados” en Muelle Barón en Valparaíso.")  #
+    print("4.- Comprar entrada a “los Fortificados” en Muelle Vergara en Viña del Mar.")  #
     print("5.- Salir.")
 
     opcion = verificacion_entero("\nIngrese su opción: ")
 
     if opcion == 1: # Concepción
-        if stock_entradas_conce < 1:
+        if totem_autoservicio["entradas"][0]["stock_entradas_conce"] < 1:
             print("No hay entradas disponibles!")
             continue
+
         print("- Compra en Concepción -")
         nombre_comprador = verificacion_string("Nombre del comprador: ")
 
         if verificacion_comprador(nombre_comprador) == False:
             print("\nERROR - Ese nombre de comprador ya existe!")
+            continue
         else:
             confirmar_codigo = verificacion_string("Código de confirmación: ")
 
             if confirmar_codigo == codigo_confirmacion:
-                comprador_añadir = {"nombre_comprador": nombre_comprador} # Convertir nombre en diccionario
-                totem_autoservicio["compradores"].append(comprador_añadir) # Añadir comprador a la lista
-                stock_entradas_conce =- 1
-                print(f"Entrada registrada! Stock restante: {stock_entradas_conce}")
+                comprador_añadir = {"nombre_comprador": nombre_comprador}       # Convertir nombre en diccionario
+                totem_autoservicio["compradores"].append(comprador_añadir)      # Añadir comprador a la lista
+                totem_autoservicio["entradas"][0]["stock_entradas_conce"] -= 1  # Restar entrada para reflejar compra en el stock
+                print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_conce"]}")
             else:
                 print("\nERROR - Código de acceso invalido")
 
-    
     elif opcion == 2: # Puente Alto
-        print(f"opcion = {opcion}")
-    
+        if totem_autoservicio["entradas"][0]["stock_entradas_puente"] < 1:
+            print("No hay entradas disponibles!")
+            continue
+
+        print("- Compra en Puente Alto -")
+        nombre_comprador = verificacion_string("Nombre del comprador: ")
+
+        if verificacion_comprador(nombre_comprador) == False:
+            print("\nERROR - Ese nombre de comprador ya existe!")
+            continue
+        else:
+            numero_entradas = verificacion_entero("Cantidad de entradas (máx 3): ")
+
+            if numero_entradas > 3 or numero_entradas < 1:
+                print("ERROR - solo puede comprar entre 1 y 3 entradas por persona")
+                continue
+            else:
+                comprador_añadir = {"nombre_comprador": nombre_comprador}       # Convertir nombre en diccionario
+                totem_autoservicio["compradores"].append(comprador_añadir)      # Añadir comprador a la lista
+                totem_autoservicio["entradas"][0]["stock_entradas_puente"] -= numero_entradas  # Restar entrada para reflejar compra en el stock
+                print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_puente"]}")
+
     elif opcion == 3: # Muelle Barón, Valparaíso
         print(f"opcion = {opcion}")
     
