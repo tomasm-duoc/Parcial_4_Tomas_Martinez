@@ -1,11 +1,36 @@
 totem_autoservicio = {
-    "compradores":
+    "compradores_conce":
     [
         {
             "nombre_comprador": "nombre1",      
         },
         {
             "nombre_comprador": "Nombre2",    # Nombres de comprador "placeholder" para testeo
+        }
+    ],
+    "compradores_puente":
+    [
+        {
+            "nombre_comprador": "nombre1",
+            "cantidad_entradas": 0
+        }
+    ],
+    "compradores_valpo":
+    [
+        {
+            "nombre_comprador": "nombre1",
+            "tipo_entrada": "G"
+        }
+    ],
+    "compradores_vinia":
+    [
+        {
+            "nombre_comprador": "nombre1",
+            "hora": "Sun"
+        },
+        {
+            "nombre_comprador": "nombre2",
+            "hora": "Ni"
         }
     ],
     "entradas":
@@ -32,14 +57,31 @@ def verificacion_entero(mensaje:str):
         else:
             return numero
 
-def verificacion_comprador(nombre:str):
-    """Esta función recorre la lista compradores y verifica que el elemento entregado
+def verificacion_comprador(nombre:str,localidad:str):
+    """Esta función recorre la lista de compradores y verifica que el elemento entregado
     (en este caso el nombre de un comprador), no este repetido. En el caso de que se repita entregara False"""
-    for i in totem_autoservicio["compradores"]:
-        nombre_lista = i["nombre_comprador"]
-        if nombre.lower() == nombre_lista.lower():
-            return False
-        
+    if localidad == "conce":
+        for i in totem_autoservicio["compradores_conce"]:
+            nombre_lista = i["nombre_comprador"]
+            if nombre.lower() == nombre_lista.lower():
+                return False
+    elif localidad == "puente":
+        for i in totem_autoservicio["compradores_puente"]:
+            nombre_lista = i["nombre_comprador"]
+            if nombre.lower() == nombre_lista.lower():
+                return False
+    elif localidad == "valpo":
+        for i in totem_autoservicio["compradores_valpo"]:
+            nombre_lista = i["nombre_comprador"]
+            if nombre.lower() == nombre_lista.lower():
+                return False
+    elif localidad == "vinia":
+        for i in totem_autoservicio["compradores_vinia"]:
+            nombre_lista = i["nombre_comprador"]
+            if nombre.lower() == nombre_lista.lower():
+                return False        
+            
+
 def verificacion_string(mensaje:str):
     """Esta función verifica que el input del usuario no sea un string vacio"""
     string = input(mensaje)
@@ -67,7 +109,7 @@ while True:
         print("- Compra en Concepción -")
         nombre_comprador = verificacion_string("Nombre del comprador: ")
 
-        if verificacion_comprador(nombre_comprador) == False:
+        if verificacion_comprador(nombre_comprador,"conce") == False:
             print("\nERROR - Ese nombre de comprador ya existe!")
             continue
         else:
@@ -75,7 +117,7 @@ while True:
 
             if confirmar_codigo == codigo_confirmacion:
                 comprador_añadir = {"nombre_comprador": nombre_comprador}       # Convertir nombre en diccionario
-                totem_autoservicio["compradores"].append(comprador_añadir)      # Añadir comprador a la lista
+                totem_autoservicio["compradores_conce"].append(comprador_añadir)# Añadir comprador a la lista
                 totem_autoservicio["entradas"][0]["stock_entradas_conce"] -= 1  # Restar entrada para reflejar compra en el stock
                 print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_conce"]}")
             else:
@@ -89,7 +131,7 @@ while True:
         print("- Compra en Puente Alto -")
         nombre_comprador = verificacion_string("Nombre del comprador: ")
 
-        if verificacion_comprador(nombre_comprador) == False:
+        if verificacion_comprador(nombre_comprador,"puente") == False:
             print("\nERROR - Ese nombre de comprador ya existe!")
             continue
         else:
@@ -99,13 +141,30 @@ while True:
                 print("ERROR - solo puede comprar entre 1 y 3 entradas por persona")
                 continue
             else:
-                comprador_añadir = {"nombre_comprador": nombre_comprador}       # Convertir nombre en diccionario
-                totem_autoservicio["compradores"].append(comprador_añadir)      # Añadir comprador a la lista
+                comprador_añadir = {"nombre_comprador": nombre_comprador,
+                                    "cantidad_entradas": numero_entradas}                      # Convertir nombre y la cantidad de entradas en diccionario
+                totem_autoservicio["compradores_puente"].append(comprador_añadir)              # Añadir comprador a la lista
                 totem_autoservicio["entradas"][0]["stock_entradas_puente"] -= numero_entradas  # Restar entrada para reflejar compra en el stock
                 print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_puente"]}")
 
     elif opcion == 3: # Muelle Barón, Valparaíso
-        print(f"opcion = {opcion}")
+        if totem_autoservicio["entradas"][0]["stock_entradas_valpo"] < 1:
+            print("No hay entradas disponibles!")
+            continue
+
+        print("- Compra en Muelle Barón. Valparaíso -")
+        nombre_comprador = verificacion_string("Nombre del comprador: ")
+
+        if verificacion_comprador(nombre_comprador,"valpo") == False:
+            print("\nERROR - Ese nombre de comprador ya existe!")
+            continue
+        else:
+            print("Tipo de entrada asignado: G")
+            comprador_añadir = {"nombre_comprador": nombre_comprador,
+                                "tipo_entrada": "G"}                        # Convertir nombre y la cantidad de entradas en diccionario
+            totem_autoservicio["compradores_valpo"].append(comprador_añadir)# Añadir comprador a la lista
+            totem_autoservicio["entradas"][0]["stock_entradas_valpo"] -= 1  # Restar entrada para reflejar compra en el stock
+            print(f"Entrada registrada! Stock restante: {totem_autoservicio["entradas"][0]["stock_entradas_valpo"]}")
     
     elif opcion == 4: # Muelle Vergara, Viña del Mar
         print(f"opcion = {opcion}")
